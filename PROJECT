@@ -1,0 +1,7 @@
+domain: gytigyg.io
+repo: gytigyg.io/m/v1
+resources:
+- group: webapp
+  kind: Friend
+  version: v1
+version: "2"

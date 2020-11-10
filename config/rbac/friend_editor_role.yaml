@@ -1,0 +1,24 @@
+# permissions for end users to edit friends.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: friend-editor-role
+rules:
+- apiGroups:
+  - webapp.gytigyg.io
+  resources:
+  - friends
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - webapp.gytigyg.io
+  resources:
+  - friends/status
+  verbs:
+  - get
