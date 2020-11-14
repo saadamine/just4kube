@@ -24,7 +24,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	webappv1 "gytigyg.io/m/v1/api/v1"
+	urlv1alpha1 "gytigyg.io/api/v1alpha1"
 )
 
 // FriendReconciler reconciles a Friend object
@@ -34,21 +34,25 @@ type FriendReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=webapp.gytigyg.io,resources=friends,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=webapp.gytigyg.io,resources=friends/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=url.gytigyg.io,resources=friends,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=url.gytigyg.io,resources=friends/status,verbs=get;update;patch
 
 func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
-	_ = context.Background()
-	_ = r.Log.WithValues("friend", req.NamespacedName)
+	ctx := context.Background()
+	log := r.Log.WithValues("friend", req.NamespacedName)
 
 	// your logic here
 	fmt.Println(req.NamespacedName)
-
+	var friend urlv1alpha1.Friend
+	if err := r.Get(ctx, req.NamespacedName, &friend); err != nil {
+		log.Error(err, "unable to fetch Store")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
 	return ctrl.Result{}, nil
 }
 
 func (r *FriendReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&webappv1.Friend{}).
+		For(&urlv1alpha1.Friend{}).
 		Complete(r)
 }

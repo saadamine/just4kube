@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1
+package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -28,10 +28,10 @@ type FriendSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Uri field of Friend. Edit Friend_types.go to remove/update
-	Uri string `json:"uri"`
+	// Uri is an field of Friend used to specify uri to use.
+	Uri string `json:"uri,omitempty"`
 
-	// ConfigMapName
+	// Uri is an field for Friend used to specify a list of configmaps to use.
 	ConfigMapName []string `json:"configMapName"`
 }
 
@@ -39,11 +39,10 @@ type FriendSpec struct {
 type FriendStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-
-	// PodName of the active Guestbook node.
+	// PodName of the active Friend node.
 	Active string `json:"active"`
 
-	// PodNames of the standby Guestbook nodes.
+	// PodNames of the standby Friend nodes.
 	Standby []string `json:"standby"`
 }
 

@@ -1,4 +1,4 @@
-module gytigyg.io/m/v1
+module gytigyg.io
 
 go 1.13
 

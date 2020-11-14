@@ -6,9 +6,9 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.2.5
   creationTimestamp: null
-  name: friends.webapp.gytigyg.io
+  name: friends.url.gytigyg.io
 spec:
-  group: webapp.gytigyg.io
+  group: url.gytigyg.io
   names:
     kind: Friend
     listKind: FriendList
@@ -35,25 +35,27 @@ spec:
           description: FriendSpec defines the desired state of Friend
           properties:
             configMapName:
-              description: ConfigMapName
+              description: Uri is an field for Friend used to specify a list of configmaps
+                to use.
               items:
                 type: string
               type: array
             uri:
-              description: Uri field of Friend. Edit Friend_types.go to remove/update
+              description: Uri is an field of Friend used to specify uri to use.
               type: string
           required:
           - configMapName
-          - uri
           type: object
         status:
           description: FriendStatus defines the observed state of Friend
           properties:
             active:
-              description: PodName of the active Guestbook node.
+              description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
+                of cluster Important: Run "make" to regenerate code after modifying
+                this file PodName of the active Friend node.'
               type: string
             standby:
-              description: PodNames of the standby Guestbook nodes.
+              description: PodNames of the standby Friend nodes.
               items:
                 type: string
               type: array
@@ -62,9 +64,9 @@ spec:
           - standby
           type: object
       type: object
-  version: v1
+  version: v1alpha1
   versions:
-  - name: v1
+  - name: v1alpha1
     served: true
     storage: true
 status:

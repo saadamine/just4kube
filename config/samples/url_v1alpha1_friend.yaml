@@ -1,9 +1,9 @@
-apiVersion: webapp.gytigyg.io/v1
+apiVersion: url.gytigyg.io/v1alpha1
 kind: Friend
 metadata:
   name: friend-sample
 spec:
   # Add fields here
-  Uri: gytigy.io
+  uri: gytigyg.io
   configMapName:
-   - config 
+  - configmap

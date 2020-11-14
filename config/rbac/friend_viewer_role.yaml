@@ -5,7 +5,7 @@ metadata:
   name: friend-viewer-role
 rules:
 - apiGroups:
-  - webapp.gytigyg.io
+  - url.gytigyg.io
   resources:
   - friends
   verbs:
@@ -13,7 +13,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - webapp.gytigyg.io
+  - url.gytigyg.io
   resources:
   - friends/status
   verbs:

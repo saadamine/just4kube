@@ -26,8 +26,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	webappv1 "gytigyg.io/m/v1/api/v1"
-	"gytigyg.io/m/v1/controllers"
+	urlv1alpha1 "gytigyg.io/api/v1alpha1"
+	"gytigyg.io/controllers"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -39,7 +39,7 @@ var (
 func init() {
 	_ = clientgoscheme.AddToScheme(scheme)
 
-	_ = webappv1.AddToScheme(scheme)
+	_ = urlv1alpha1.AddToScheme(scheme)
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -59,7 +59,7 @@ func main() {
 		MetricsBindAddress: metricsAddr,
 		Port:               9443,
 		LeaderElection:     enableLeaderElection,
-		LeaderElectionID:   "c49bafb9.gytigyg.io",
+		LeaderElectionID:   "c778e1b7.gytigyg.io",
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
