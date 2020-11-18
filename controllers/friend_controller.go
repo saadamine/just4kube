@@ -44,9 +44,14 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	// your logic here
 	fmt.Println(req.NamespacedName)
 	var friend urlv1alpha1.Friend
+
 	if err := r.Get(ctx, req.NamespacedName, &friend); err != nil {
 		log.Error(err, "unable to fetch Store")
 		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+	fmt.Println(friend.Spec.Uri)
+	if friend.Spec.Uri != "gytigyg.io"{
+		fmt.Println("URI doesn't match")
 	}
 	return ctrl.Result{}, nil
 }
