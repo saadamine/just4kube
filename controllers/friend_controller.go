@@ -23,6 +23,9 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 
 	urlv1alpha1 "gytigyg.io/api/v1alpha1"
 )
@@ -50,9 +53,30 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 	fmt.Println(friend.Spec.Uri)
-	if friend.Spec.Uri != "gytigyg.io"{
+	if friend.Spec.Uri != "https://url.gytigyg.io/amine"{
 		fmt.Println("URI doesn't match")
 	}
+
+	if friend.Spec.Uri == "https://url.gytigyg.io/amine" {
+		labels := map[string]string{
+			"app": req.NamespacedName.Name,
+		}
+
+		configMap := &v1.ConfigMap{
+			ObjectMeta:  metav1.ObjectMeta {
+				Name:      "gytigyg-"+friend.Name,
+				Namespace: req.Namespace,
+				Labels:    labels,
+			},
+			Data: map[string]string{
+				"uri": string(friend.Spec.Uri),
+			},
+		}
+		if err := r.Client.Create(ctx, configMap); err != nil {
+			return ctrl.Result{}, err
+		}
+	}
+
 	return ctrl.Result{}, nil
 }
 
