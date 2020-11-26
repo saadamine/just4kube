@@ -49,6 +49,7 @@ type FriendProperties struct {
 
 // +kubebuilder:rbac:groups=url.gytigyg.io,resources=friends,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=url.gytigyg.io,resources=friends/status,verbs=get;update;patch
+
 func (f *FriendProperties) NewConfigMapForFriend(friend *urlv1alpha1.Friend) *corev1.ConfigMap {
 	labels := map[string]string{
 		"app": friend.Name,
@@ -73,7 +74,6 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	log := r.Log.WithValues("friend", req.NamespacedName)
 
 	// your logic here
-	fmt.Println(req.NamespacedName)
 	var friend urlv1alpha1.Friend
 
 	if err := r.Get(ctx, req.NamespacedName, &friend); err != nil {
@@ -81,16 +81,16 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	fmt.Println(friend.Spec.Uri)
+	// fmt.Println(friend.Spec.Uri)
 	if friend.Spec.Uri != "https://url.gytigyg.io/amine"{
 		fmt.Println("URI doesn't match")
-		// // Configmap creation failed
-		// friend.Status.Active = "Failed"
-		// if err := r.Status().Update(ctx, &friend); err != nil {
-		// 	r.Log.Error(err, "unable to update friend status")
-		// 	return ctrl.Result{}, err
-		// }
-		// return ctrl.Result{}, nil
+		// Configmap creation failed
+		friend.Status.Active = "Failed"
+		if err := r.Status().Update(ctx, &friend); err != nil {
+			r.Log.Error(err, "unable to update friend status")
+			return ctrl.Result{}, err
+		}
+		return ctrl.Result{}, nil
 	}
 
 	if friend.Spec.Uri == "https://url.gytigyg.io/amine" {
@@ -111,6 +111,11 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 			}
 		}
 		if err != nil {
+			friend.Status.Active = "Failed"
+			if err := r.Status().Update(ctx, &friend); err != nil {
+				r.Log.Error(err, "unable to update friend status")
+				return ctrl.Result{}, err
+			}
 			return ctrl.Result{}, err
 		}
 		
@@ -129,5 +134,6 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 func (r *FriendReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&urlv1alpha1.Friend{}).
+		Owns(&corev1.ConfigMap{}).
 		Complete(r)
 }

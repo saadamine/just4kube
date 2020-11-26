@@ -47,6 +47,7 @@ type FriendStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
 
 // Friend is the Schema for the friends API
 type Friend struct {
