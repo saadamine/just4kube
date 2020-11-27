@@ -43,7 +43,7 @@ type FriendStatus struct {
 	Active string `json:"active"`
 
 	// PodNames of the standby Friend nodes.
-	Standby []string `json:"standby"`
+	// Standby []string `json:"standby"`
 }
 
 // +kubebuilder:object:root=true
