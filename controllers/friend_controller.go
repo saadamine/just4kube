@@ -111,6 +111,7 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 			}
 		}
 		if err != nil {
+			
 			friend.Status.Active = "Failed"
 			if err := r.Status().Update(ctx, &friend); err != nil {
 				r.Log.Error(err, "unable to update friend status")
