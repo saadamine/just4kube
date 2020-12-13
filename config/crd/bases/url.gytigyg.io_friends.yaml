@@ -15,6 +15,8 @@ spec:
     plural: friends
     singular: friend
   scope: Namespaced
+  subresources:
+    status: {}
   validation:
     openAPIV3Schema:
       description: Friend is the Schema for the friends API
@@ -34,17 +36,9 @@ spec:
         spec:
           description: FriendSpec defines the desired state of Friend
           properties:
-            configMapName:
-              description: Uri is an field for Friend used to specify a list of configmaps
-                to use.
-              items:
-                type: string
-              type: array
             uri:
               description: Uri is an field of Friend used to specify uri to use.
               type: string
-          required:
-          - configMapName
           type: object
         status:
           description: FriendStatus defines the observed state of Friend
@@ -54,14 +48,8 @@ spec:
                 of cluster Important: Run "make" to regenerate code after modifying
                 this file PodName of the active Friend node.'
               type: string
-            standby:
-              description: PodNames of the standby Friend nodes.
-              items:
-                type: string
-              type: array
           required:
           - active
-          - standby
           type: object
       type: object
   version: v1alpha1

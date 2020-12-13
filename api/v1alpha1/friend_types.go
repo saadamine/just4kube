@@ -32,7 +32,7 @@ type FriendSpec struct {
 	Uri string `json:"uri,omitempty"`
 
 	// Uri is an field for Friend used to specify a list of configmaps to use.
-	ConfigMapName []string `json:"configMapName"`
+	// ConfigMapName []string `json:"configMapName"`
 }
 
 // FriendStatus defines the observed state of Friend
@@ -43,7 +43,7 @@ type FriendStatus struct {
 	Active string `json:"active"`
 
 	// PodNames of the standby Friend nodes.
-	Standby []string `json:"standby"`
+	// Standby []string `json:"standby"`
 }
 
 // +kubebuilder:object:root=true

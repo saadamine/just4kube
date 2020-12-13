@@ -19,11 +19,11 @@ var _ = Describe("Friend controller", func() {
 
 	// Define utility constants for object names and testing timeouts/durations and intervals.
 	const (
-		FriendName      = "test-friend1"
+		FriendName      = "friend-sample"
 		FriendNamespace = "default"
-		Uri             = "gytigyg.io"
+		Uri             = "https://url.gytigyg.io/amine"
 	)
-
+	// configMapName := []string{"configmap"}
 	Context("When updating Friend Status", func() {
 		It("Should update Friend Status.Active to success when new Friend are created", func() {
 			ctx := context.Background()
@@ -38,7 +38,7 @@ var _ = Describe("Friend controller", func() {
 				},
 				Spec: urlv1alpha1.FriendSpec{
 					Uri: Uri,
-					ConfigMapName: nil,
+					// ConfigMapName: configMapName,
 				},
 			}
 			Expect(k8sClient.Create(ctx, friend)).Should(Succeed())

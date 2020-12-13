@@ -19,18 +19,16 @@ package controllers
 import (
 	"context"
 	"fmt"
-	"k8s.io/apimachinery/pkg/api/errors"
 	"github.com/go-logr/logr"
+	"k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/types"
-	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
-
-
 
 	urlv1alpha1 "gytigyg.io/api/v1alpha1"
 )
@@ -38,10 +36,9 @@ import (
 // FriendReconciler reconciles a Friend object
 type FriendReconciler struct {
 	client.Client
-	Log    logr.Logger
-	Scheme *runtime.Scheme
+	Log        logr.Logger
+	Scheme     *runtime.Scheme
 	Properties FriendProperties
-
 }
 type FriendProperties struct {
 	AgentVersion string
@@ -56,8 +53,8 @@ func (f *FriendProperties) NewConfigMapForFriend(friend *urlv1alpha1.Friend) *co
 	}
 
 	configMap := &v1.ConfigMap{
-		ObjectMeta:  metav1.ObjectMeta {
-			Name:      "gytigyg-"+friend.Name,
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "gytigyg-" + friend.Name,
 			Namespace: friend.Namespace,
 			Labels:    labels,
 		},
@@ -67,7 +64,6 @@ func (f *FriendProperties) NewConfigMapForFriend(friend *urlv1alpha1.Friend) *co
 	}
 	return configMap
 }
-
 
 func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	ctx := context.Background()
@@ -82,7 +78,7 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	}
 
 	// fmt.Println(friend.Spec.Uri)
-	if friend.Spec.Uri != "https://url.gytigyg.io/amine"{
+	if friend.Spec.Uri != "https://url.gytigyg.io/amine" {
 		fmt.Println("URI doesn't match")
 		// Configmap creation failed
 		friend.Status.Active = "Failed"
@@ -95,7 +91,7 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 
 	if friend.Spec.Uri == "https://url.gytigyg.io/amine" {
 		ctx := context.Background()
-		configmapName := types.NamespacedName{Name: "gytigyg-"+friend.Name, Namespace: friend.Namespace}
+		configmapName := types.NamespacedName{Name: "gytigyg-" + friend.Name, Namespace: friend.Namespace}
 		configmap := &corev1.ConfigMap{}
 
 		err := r.Client.Get(ctx, configmapName, configmap)
@@ -111,7 +107,7 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 			}
 		}
 		if err != nil {
-			
+
 			friend.Status.Active = "Failed"
 			if err := r.Status().Update(ctx, &friend); err != nil {
 				r.Log.Error(err, "unable to update friend status")
@@ -119,7 +115,7 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 			}
 			return ctrl.Result{}, err
 		}
-		
+
 		// Configmap creation failed
 		friend.Status.Active = "Success"
 		if err := r.Status().Update(ctx, &friend); err != nil {
