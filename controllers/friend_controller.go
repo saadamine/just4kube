@@ -19,8 +19,8 @@ package controllers
 import (
 	"context"
 	"fmt"
+
 	"github.com/go-logr/logr"
-	"k8s.io/api/core/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -52,7 +52,7 @@ func (f *FriendProperties) NewConfigMapForFriend(friend *urlv1alpha1.Friend) *co
 		"app": friend.Name,
 	}
 
-	configMap := &v1.ConfigMap{
+	configMap := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "gytigyg-" + friend.Name,
 			Namespace: friend.Namespace,
@@ -106,8 +106,7 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 				return ctrl.Result{}, err
 			}
 		}
-		if err != nil {
-
+		if err != nil && !errors.IsNotFound(err) {
 			friend.Status.Active = "Failed"
 			if err := r.Status().Update(ctx, &friend); err != nil {
 				r.Log.Error(err, "unable to update friend status")
