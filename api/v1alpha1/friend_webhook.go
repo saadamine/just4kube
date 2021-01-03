@@ -19,6 +19,9 @@ package v1alpha1
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/util/validation/field"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 )
@@ -55,7 +58,7 @@ func (r *Friend) ValidateCreate() error {
 	friendlog.Info("validate create", "name", r.Name)
 
 	// TODO(user): fill in your validation logic upon object creation.
-	return nil
+	return r.validateFriend()
 }
 
 // ValidateUpdate implements webhook.Validator so a webhook will be registered for the type
@@ -63,7 +66,7 @@ func (r *Friend) ValidateUpdate(old runtime.Object) error {
 	friendlog.Info("validate update", "name", r.Name)
 
 	// TODO(user): fill in your validation logic upon object update.
-	return nil
+	return r.validateFriend()
 }
 
 // ValidateDelete implements webhook.Validator so a webhook will be registered for the type
@@ -71,5 +74,28 @@ func (r *Friend) ValidateDelete() error {
 	friendlog.Info("validate delete", "name", r.Name)
 
 	// TODO(user): fill in your validation logic upon object deletion.
+	return nil
+}
+
+func (r *Friend) validateFriend() error {
+	var allErrs field.ErrorList
+	if err := r.validateFriendUri(); err != nil {
+		allErrs = append(allErrs, err)
+	}
+
+	if len(allErrs) == 0 {
+		return nil
+	}
+
+	return apierrors.NewInvalid(
+		schema.GroupKind{Group: "batch.tutorial.kubebuilder.io", Kind: "Friend"},
+		r.Name, allErrs)
+}
+
+
+func (r *Friend) validateFriendUri() *field.Error {
+	if r.ObjectMeta.Name != "sample-friend" {
+		return field.Invalid(field.NewPath("metadata").Child("name"), r.Name, "must be named 'sample-friend'")
+	}
 	return nil
 }

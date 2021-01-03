@@ -78,7 +78,7 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	}
 
 	// fmt.Println(friend.Spec.Uri)
-	if friend.Spec.Uri != "https://url.gytigyg.io/amine" {
+	if friend.Spec.Uri != "https://url.gytigyg.io" {
 		fmt.Println("URI doesn't match")
 		// Configmap creation failed
 		friend.Status.Active = "Failed"
@@ -89,7 +89,7 @@ func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, nil
 	}
 
-	if friend.Spec.Uri == "https://url.gytigyg.io/amine" {
+	if friend.Spec.Uri == "https://url.gytigyg.io" {
 		ctx := context.Background()
 		configmapName := types.NamespacedName{Name: "gytigyg-" + friend.Name, Namespace: friend.Namespace}
 		configmap := &corev1.ConfigMap{}
