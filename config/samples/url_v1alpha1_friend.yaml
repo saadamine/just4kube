@@ -4,6 +4,6 @@ metadata:
   name: friend-sample
 spec:
   # Add fields here
-  uri: gytigyg.io
+  uri: https://url.gytigyg.io/amine
   configMapName:
   - configmap

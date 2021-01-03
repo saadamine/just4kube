@@ -26,6 +26,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
+	batchv1alpha1 "k8s.io/api/batch/v1alpha1"
+
 	urlv1alpha1 "gytigyg.io/api/v1alpha1"
 	"gytigyg.io/controllers"
 	// +kubebuilder:scaffold:imports
@@ -40,6 +42,7 @@ func init() {
 	_ = clientgoscheme.AddToScheme(scheme)
 
 	_ = urlv1alpha1.AddToScheme(scheme)
+	_ = batchv1alpha1.AddToScheme(scheme)
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -72,6 +75,10 @@ func main() {
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Friend")
+		os.Exit(1)
+	}
+	if err = (&batchv1alpha1.Friend{}).SetupWebhookWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create webhook", "webhook", "Friend")
 		os.Exit(1)
 	}
 	// +kubebuilder:scaffold:builder
