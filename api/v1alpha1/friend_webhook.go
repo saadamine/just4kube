@@ -79,7 +79,7 @@ func (r *Friend) ValidateDelete() error {
 
 func (r *Friend) validateFriend() error {
 	var allErrs field.ErrorList
-	if err := r.validateFriendUri(); err != nil {
+	if err := r.validateFriendName(); err != nil {
 		allErrs = append(allErrs, err)
 	}
 
@@ -93,7 +93,7 @@ func (r *Friend) validateFriend() error {
 }
 
 
-func (r *Friend) validateFriendUri() *field.Error {
+func (r *Friend) validateFriendName() *field.Error {
 	if r.ObjectMeta.Name != "sample-friend" {
 		return field.Invalid(field.NewPath("metadata").Child("name"), r.Name, "must be named 'sample-friend'")
 	}

@@ -26,10 +26,10 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	batchv1alpha1 "k8s.io/api/batch/v1alpha1"
+	batchv1alpha1 "github.com/saadamine/just4kube/api/v1alpha1"
 
-	urlv1alpha1 "gytigyg.io/api/v1alpha1"
-	"gytigyg.io/controllers"
+	urlv1alpha1 "github.com/saadamine/just4kube/api/v1alpha1"
+	"github.com/saadamine/just4kube/controllers"
 	// +kubebuilder:scaffold:imports
 )
 
