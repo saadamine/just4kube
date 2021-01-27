@@ -17,11 +17,11 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"k8s.io/apimachinery/pkg/runtime"
-	ctrl "sigs.k8s.io/controller-runtime"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/validation/field"
+	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 )
@@ -37,7 +37,7 @@ func (r *Friend) SetupWebhookWithManager(mgr ctrl.Manager) error {
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 
-// +kubebuilder:webhook:path=/mutate-batch-v1alpha1-friend,mutating=true,failurePolicy=fail,groups=batch,resources=friends,verbs=create;update,versions=v1alpha1,name=mfriend.kb.io
+// +kubebuilder:webhook:path=/mutate-url-gytigyg-io-v1alpha1-friend,mutating=true,failurePolicy=fail,groups=url.gytigyg.io,resources=friends,verbs=create;update,versions=v1alpha1,name=mfriend.kb.io
 
 var _ webhook.Defaulter = &Friend{}
 
@@ -49,7 +49,7 @@ func (r *Friend) Default() {
 }
 
 // TODO(user): change verbs to "verbs=create;update;delete" if you want to enable deletion validation.
-// +kubebuilder:webhook:verbs=create;update,path=/validate-batch-v1alpha1-friend,mutating=false,failurePolicy=fail,groups=batch,resources=friends,versions=v1alpha1,name=vfriend.kb.io
+// +kubebuilder:webhook:verbs=create;update,path=/validate-url-gytigyg-io-v1alpha1-friend,mutating=false,failurePolicy=fail,groups=url.gytigyg.io,resources=friends,versions=v1alpha1,name=vfriend.kb.io
 
 var _ webhook.Validator = &Friend{}
 
@@ -91,7 +91,6 @@ func (r *Friend) validateFriend() error {
 		schema.GroupKind{Group: "batch.tutorial.kubebuilder.io", Kind: "Friend"},
 		r.Name, allErrs)
 }
-
 
 func (r *Friend) validateFriendName() *field.Error {
 	if r.ObjectMeta.Name != "sample-friend" {

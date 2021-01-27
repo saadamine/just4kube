@@ -30,7 +30,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 
-	urlv1alpha1 "gytigyg.io/api/v1alpha1"
+	urlv1alpha1 "github.com/saadamine/just4kube/api/v1alpha1"
 )
 
 // FriendReconciler reconciles a Friend object
@@ -65,8 +65,7 @@ func (f *FriendProperties) NewConfigMapForFriend(friend *urlv1alpha1.Friend) *co
 	return configMap
 }
 
-func (r *FriendReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
-	ctx := context.Background()
+func (r *FriendReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := r.Log.WithValues("friend", req.NamespacedName)
 
 	// your logic here
