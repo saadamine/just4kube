@@ -22,7 +22,7 @@ var _ = Describe("Friend controller", func() {
 	const (
 		FriendName      = "friend-sample"
 		FriendNamespace = "default"
-		Uri             = "https://url.gytigyg.io/amine"
+		Uri             = "https://url.gytigyg.io"
 	)
 	// configMapName := []string{"configmap"}
 	Context("When updating Friend Status", func() {
@@ -98,7 +98,7 @@ var _ = Describe("Friend controller", func() {
 				Log:    zapr.NewLogger(zapLog),
 				Scheme: scheme.Scheme,
 			}
-			Expect(reconcile.Reconcile(ctx, ctrl.Request{NamespacedName: name})).To(Equal(ctrl.Result{}))
+			Expect(reconcile.Reconcile(context.TODO(), ctrl.Request{NamespacedName: name})).To(Equal(ctrl.Result{}))
 
 			response := urlv1alpha1.Friend{}
 			Expect(k8sClient.Get(ctx, name, &response)).To(Succeed())
